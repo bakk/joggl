@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title></title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.7.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.7.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+    </style>
+</head>
+<body>
+
+<div id='map'></div>
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoiYmFrayIsImEiOiJucGluZjdFIn0.yRHgsbqP2PuZ7iMXR56Ekw';
+var map = new mapboxgl.Map({
+  container: 'map', // container id
+  style: 'https://www.mapbox.com/mapbox-gl-styles/styles/outdoors-v7.json', //stylesheet location
+  center: [68, 10], // starting position
+  zoom:4 // starting zoom
+});
+map.fitBounds([ [57.5, 4], [72, 31.5] ]);
+
+map.on('style.load', function() {
+
+      mapboxgl.util.getJSON('route.geojson', function (err, geojson) {
+        if (err) throw err;
+        var sourceObj = new mapboxgl.GeoJSONSource({
+          data: geojson
+        });
+        map.addSource('myroute', sourceObj); // add
+
+        map.addLayer({
+          "id": "route",
+          "type": "line",
+          "source": "myroute",
+          "layout": {
+            "line-join": "round",
+            "line-cap": "round"
+          },
+          "paint": {
+            "line-color": "#ff6400",
+            "line-width": 2
+          }
+        });
+       
+    });
+  }); 
+</script>
+
+</body>
+</html>
