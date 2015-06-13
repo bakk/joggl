@@ -54,8 +54,14 @@ var joggl = this.joggl || {};
     mapboxgl.util.getJSON(url, function (err, result) {
             if (err) throw err;
             var place = result['address']
-            document.getElementById('place').innerHTML = place['village'] 
-            + ' i ' + place['county'] + ' kommune, ' + place['state'];
+            var displayName = '';
+            if (place['village']) {
+              displayName += place['village'] + ' i ';
+            } else if (place['hamlet']) {
+              displayName += place['hamlet'] + ' i ';
+            }
+            displayName += place['county'] + ' kommune, ' + place['state'];
+            document.getElementById('place').innerHTML = displayName;
     });
   }
 
