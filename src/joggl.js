@@ -1,8 +1,9 @@
 var joggl = this.joggl || {};
 (function (ns) {
 
+//https://router.project-osrm.org/viaroute?instructions=false&alt=false&z=15&compression=false&loc=63.43091539843532,10.402861833572388&hint=Dj66AP_____cegIADwAAAEAAAAAOAAAARgAAAFQ8rQT1OJwDtq0AAD_hxwO0up4AAQABAQ&loc=40.40893363056922,-3.699318766593933&hint=taELAP____8yXCgAVgAAAF0AAAAAAAAAAAAAAEK0nghNqKIItq0AADuXaAKCjcf_AAABAQ&checksum=450683910
   function initData(data) {
-      var totalKm = Number(data[0]['jogging'].replace(/,/g,'.'));
+      var totalKm = Number(data[0]['jogging2016'].replace(/,/g,'.'));
       distancemap = ns.distancemap;
       var found;
       var i = 0;
@@ -25,6 +26,7 @@ var joggl = this.joggl || {};
 
     mapboxgl.util.getJSON(url, function (err, result) {
             if (err) throw err;
+            /*console.log(result);
             var place = result['address']
             var displayName = '';
             if (place['village']) {
@@ -32,8 +34,9 @@ var joggl = this.joggl || {};
             } else if (place['hamlet']) {
               displayName += place['hamlet'] + ' i ';
             }
-            displayName += place['county'] + ' kommune, ' + place['state'];
-            document.getElementById('place').innerHTML = displayName;
+            displayName += place['county'] + ' kommune, ' + place['state'];*/
+
+            document.getElementById('place').innerHTML = result.display_name;
     });
   }
 
@@ -139,12 +142,13 @@ var joggl = this.joggl || {};
         "layout": {
           "icon-image": "{marker-symbol}",
           "text-field": "{title}",
-          "text-font": "Open Sans Semibold, Arial Unicode MS Bold",
+          "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
           "text-offset": [0, 0.8],
-          "text-anchor": "top"
+          "text-anchor": "top",
+          "text-size": 12
         },
         "paint": {
-          "text-size": 12,
+          
           "text-halo-width": 2,
           "text-halo-color": "#eee"
         }
@@ -200,18 +204,25 @@ var joggl = this.joggl || {};
     mapboxgl.accessToken = 'pk.eyJ1IjoiYmFrayIsImEiOiJucGluZjdFIn0.yRHgsbqP2PuZ7iMXR56Ekw';
     var map = new mapboxgl.Map({
       container: 'map', // container id
-      style: 'lib/basic-v7.json', //stylesheet location
-      center: [68, 10], // starting position
-      zoom:4 // starting zoom
+      style: 'lib/basic-v8.json', //stylesheet location
+      center: [68,10], // starting position
+      zoom:4, // starting zoom
+      pitch: 30,
+      bearing: 0
     });
-    map.fitBounds([ [56.5, 4], [72, 31.5] ]);
+    map.fitBounds([ [-5, 38], [15, 65 ] ]);
 
     ns.map = map;
 
     map.on('style.load', function() {
-          mapboxgl.util.getJSON('data/route.geojson', function (err, geojson) {
+          mapboxgl.util.getJSON('data/madrid.geojson', function (err, geojson) {
             if (err) throw err;
             ns.geojson1 = geojson;
+            var coords = geojson.features[0].geometry.coordinates;
+            coords.reverse();
+            for(var i = 0; i < coords.length; i++) {
+              coords[i].reverse();
+            }
             ns.geojson2 = JSON.parse(JSON.stringify(geojson));
             distances = calculateDistances(geojson);
             ns.distancemap = distances;
