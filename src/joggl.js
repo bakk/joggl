@@ -26,16 +26,6 @@ var joggl = this.joggl || {};
 
     mapboxgl.util.getJSON(url, function (err, result) {
             if (err) throw err;
-            /*console.log(result);
-            var place = result['address']
-            var displayName = '';
-            if (place['village']) {
-              displayName += place['village'] + ' i ';
-            } else if (place['hamlet']) {
-              displayName += place['hamlet'] + ' i ';
-            }
-            displayName += place['county'] + ' kommune, ' + place['state'];*/
-
             document.getElementById('place').innerHTML = result.display_name;
     });
   }
@@ -70,13 +60,14 @@ var joggl = this.joggl || {};
         "layout": {
           "line-join": "round",
           "line-cap": "round"
+
         },
         "paint": {
-          "line-color": "#000000",
+          "line-color": "#90C3D4",
           "line-width": 2,
-          "line-opacity": 0.2
+          "line-opacity": 0.7
         }
-      },"place_label_city");
+      },"admin-2-boundaries");
 
       ns.map.addLayer({
         "id": "route-run",
@@ -88,9 +79,9 @@ var joggl = this.joggl || {};
         },
         "paint": {
           "line-color": "#ff6400",
-          "line-width": 3
+          "line-width": 4
         }
-      },"place_label_city");
+      },"admin-2-boundaries");
   }
 
   function showMarker(key, distancemap) {
@@ -106,17 +97,17 @@ var joggl = this.joggl || {};
             },
             "properties": {
               "title": '' + Math.round(key/1000) + ' km',
-              "marker-symbol": "school-24",
+              "marker-symbol": "",
               "text-size": 16
             }
           }, {
             "type": "Feature",
             "geometry": {
               "type": "Point",
-              "coordinates": [25.781588, 71.167982]
+              "coordinates": [10.402484, 63.430975]
             },
             "properties": {
-              "title": "Nordkapp 2540 km",
+              "title": "Start",
               "marker-symbol": "circle-stroked-18",
               "text-size": 12
             }
@@ -124,12 +115,12 @@ var joggl = this.joggl || {};
             "type": "Feature",
             "geometry": {
               "type": "Point",
-              "coordinates": [ 7.109169, 58.018015]
+              "coordinates": [ -3.699326,40.408891]
             },
             "properties": {
-              "title": "Lindesnes 0 km",
+              "title": "Mål 3500 km",
               "marker-symbol": "triangle-stroked-18",
-              "text-size": 8
+              "text-size": 12
             }
           }]
         }
@@ -204,13 +195,14 @@ var joggl = this.joggl || {};
     mapboxgl.accessToken = 'pk.eyJ1IjoiYmFrayIsImEiOiJucGluZjdFIn0.yRHgsbqP2PuZ7iMXR56Ekw';
     var map = new mapboxgl.Map({
       container: 'map', // container id
-      style: 'lib/basic-v8.json', //stylesheet location
-      center: [68,10], // starting position
-      zoom:4, // starting zoom
-      pitch: 30,
-      bearing: 0
+      style: 'mapbox://styles/mapbox/light-v8', //stylesheet location
+      center: [61,10], // starting position
+      zoom:4//, // starting zoom
+
+      //pitch: 30,
+      //bearing: 0
     });
-    map.fitBounds([ [-5, 38], [15, 65 ] ]);
+    map.fitBounds([ [-5, 39], [15, 64 ] ]);
 
     ns.map = map;
 
