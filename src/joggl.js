@@ -118,7 +118,7 @@ var joggl = this.joggl || {};
               "coordinates": [ -3.699326,40.408891]
             },
             "properties": {
-              "title": "Mål 3500 km",
+              "title": "Mål 3563 km",
               "marker-symbol": "triangle-stroked-18",
               "text-size": 12
             }
